@@ -13,21 +13,20 @@ public class Curso {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cursoId;
-    @NotBlank(message = "name must not be null")
+    @Column(name = "nombre", nullable = false)
     private String nombre;
+    @Column(name = "descripcion")
     private String descripcion;
-    @NotBlank(message = "cupo must not be null")
+    @Column(name = "cupo", nullable = false)
     private Integer cupo;
-    @NotBlank(message = "turno must not be null")
+    @Column(name = "turno", nullable = false)
     private String turno;
 
     @ManyToOne
     @JoinColumn(name = "PROFESOR_ID", nullable = true)
-    @JsonIgnoreProperties (value = {"nombre", "apellido", "fechaDeNacimiento", "salario", "cursos", "edad"})
     private Profesor profesor;
 
     @OneToMany (mappedBy = "curso", cascade = CascadeType.REMOVE)
-    @JsonIgnore
     private List<Inscripcion> cursoInscripciones;
 
     public Curso (){};

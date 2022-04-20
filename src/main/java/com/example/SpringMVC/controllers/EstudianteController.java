@@ -1,5 +1,6 @@
 package com.example.SpringMVC.controllers;
 
+import com.example.SpringMVC.dto.EstudianteDTO;
 import com.example.SpringMVC.entities.Estudiante;
 import com.example.SpringMVC.entities.Inscripcion;
 import com.example.SpringMVC.services.EstudianteService;
@@ -22,16 +23,16 @@ public class EstudianteController {
     }
 
     @GetMapping
-    public List<Estudiante> getEstudiantes() {
+    public List<EstudianteDTO> getEstudiantes() {
         return estudianteService.getEstudiantes();
     }
 
     @GetMapping(path = "{id}")
-    public Estudiante getEstudianteById(@PathVariable Long id){
+    public EstudianteDTO getEstudianteById(@PathVariable Long id){
         return estudianteService.getEstudianteById(id);
     }
     @PostMapping
-    public Optional<Estudiante> addEstudiante(@Valid @RequestBody Estudiante estudiante){
+    public Estudiante addEstudiante(@Valid @RequestBody Estudiante estudiante){
         return estudianteService.addNewEstudiante(estudiante);
     }
 

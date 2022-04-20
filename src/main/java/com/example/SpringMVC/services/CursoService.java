@@ -1,11 +1,14 @@
 package com.example.SpringMVC.services;
 
+import com.example.SpringMVC.dto.CursoDTO;
 import com.example.SpringMVC.entities.Curso;
+import com.example.SpringMVC.mapper.CursoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.SpringMVC.repositories.CursoRepository;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,8 +22,15 @@ public class CursoService {
         this.cursoRepository = cursoRepository;
     }
 
-    public List<Curso> getCursos(){
-        return (List<Curso>) cursoRepository.findAll();
+    public List<CursoDTO> getCursos(){
+        List<CursoDTO> cursosDTO = new ArrayList<>();
+        List<Curso> cursos = (List<Curso>) cursoRepository.findAll();
+
+        for (Curso curso:cursos) {
+            cursosDTO.add(CursoMapper.toDTO(curso));
+        }
+
+        return cursosDTO;
     }
 
     public void modificarTurno(Long id, String turno) {
@@ -29,8 +39,13 @@ public class CursoService {
         cursoRepository.save(c);
     }
 
-    public Curso getCursoById(Long id) {
-        return cursoRepository.findById(id).orElseThrow(() -> new IllegalStateException("no existe el curso con el id " + id));
+    public CursoDTO getCursoById(Long id) {
+        Curso curso = cursoRepository.findById(id).orElseThrow();
+        return CursoMapper.toDTO(curso);
+    }
+
+    public void deleteCurso (Long id){
+        cursoRepository.deleteById(id);
     }
 
     public Curso addCurso(Curso curso) {
@@ -51,10 +66,6 @@ public class CursoService {
         return cursoRepository.findById(id);
     }
 
-    public void deleteCurso (Long id){
-        boolean existe = cursoRepository.existsById(id);
-        if(!existe) { throw new IllegalStateException("No existe el curso con el id " + id);}
-        cursoRepository.deleteById(id);
-    }
+
 }
 

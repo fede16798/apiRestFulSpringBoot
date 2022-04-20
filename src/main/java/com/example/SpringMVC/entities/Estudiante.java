@@ -16,13 +16,14 @@ public class Estudiante {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long legajo;
-    @NotBlank(message = "name must not be null")
+    @Column(name = "nombre", nullable = false)
     private String nombre;
-    @NotBlank(message = "last name must not be null")
+    @Column(name = "apellido", nullable = false)
     private String apellido;
+    @Column(name = "fecha_de_nacimiento", nullable = false)
     private LocalDate fechaDeNacimiento;
     @CarreraValidation()
-    @NotBlank(message = "career must not be null")
+    @Column(name = "carrera", nullable = false)
     private String carrera;
     @Transient
     private Integer edad;

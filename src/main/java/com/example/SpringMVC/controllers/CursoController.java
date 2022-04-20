@@ -1,5 +1,6 @@
 package com.example.SpringMVC.controllers;
 
+import com.example.SpringMVC.dto.CursoDTO;
 import com.example.SpringMVC.entities.Curso;
 import com.example.SpringMVC.services.CursoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +21,12 @@ public class CursoController {
     }
 
     @GetMapping
-    public List<Curso> getCursos() {
+    public List<CursoDTO> getCursos() {
         return cursoService.getCursos();
     }
 
     @GetMapping(path = "{id}")
-    public Curso getCursoById(@PathVariable Long id){
+    public CursoDTO getCursoById(@PathVariable Long id){
         return cursoService.getCursoById(id);
     }
 

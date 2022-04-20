@@ -1,5 +1,6 @@
 package com.example.SpringMVC.configs;
 
+import com.example.SpringMVC.entities.Curso;
 import com.example.SpringMVC.entities.Estudiante;
 import com.example.SpringMVC.entities.Inscripcion;
 import com.example.SpringMVC.entities.Profesor;
@@ -15,6 +16,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,9 +27,9 @@ public class CursoConfig {
     CommandLineRunner commandLineRunner(InscripcionService inscripcionService, EstudianteService estudianteService, InscripcionRepository inscripcionR, EstudianteRepository estudianteR, CursoRepository cursoR, ProfesorRepository professorR, ProfesorService profesorService, CursoService cursoService) {
         return args -> {
 /*
-            Profesor p1 = new Profesor("Marcelo", "Gallardo", LocalDate.of(1976, 1, 18), 180000);
-            Profesor p2 = new Profesor("Matias", "Biscay", LocalDate.of(1974, 3, 5), 130000);
-            Profesor p3 = new Profesor("Hernan", "Bujan", LocalDate.of(1974, 12, 5), 130000);
+            Profesor p1 = new Profesor("Marcelo", "Gallardo", LocalDate.of(1976, 1, 18), 180000.0);
+            Profesor p2 = new Profesor("Matias", "Biscay", LocalDate.of(1974, 3, 5), 130000.0);
+            Profesor p3 = new Profesor("Hernan", "Bujan", LocalDate.of(1974, 12, 5), 130000.0);
             professorR.saveAll(List.of(p1,p2,p3));
 
             Curso c1 = new Curso("Defensa", "Defensa posisional", 20, "Noche");
@@ -87,8 +89,8 @@ public class CursoConfig {
             Inscripcion i19 = new Inscripcion(c4,e2,LocalDate.of(2021,7,8));
 
             inscripcionR.saveAll(List.of(i1,i2,i3,i4,i5,i6,i7,i8,i9,i10,i11,i12,i13,i14,i15,i16,i17,i18,i19));
-*/
-/*
+
+
             System.out.println("Busqueda de profesores: -------------------------------------------------------------------------------");
             System.out.println(profesorService.getProfesores());
 

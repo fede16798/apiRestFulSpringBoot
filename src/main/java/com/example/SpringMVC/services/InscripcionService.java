@@ -35,19 +35,17 @@ public class InscripcionService {
     }
 
     public Inscripcion getInscripcionesById(Long id) {
-        return inscripcionRepository.findById(id).orElseThrow(() -> new IllegalStateException("no existe la inscripcion con el id " + id));
+        return inscripcionRepository.findById(id).orElseThrow();
     }
 
     public void deleteInscripcion(Long id){
-        boolean existe = inscripcionRepository.existsById(id);
-        if(!existe) { throw new IllegalStateException("no existe la inscripcion con el id " + id);}
         inscripcionRepository.deleteById(id);
     }
 
     public Inscripcion addInscripcion(Long idEstudiante, Long idCurso) {
 
-        Estudiante est = estudianteRepository.findById(idEstudiante).orElseThrow(()-> new IllegalStateException("No existe el estudiante con el id " + idEstudiante));
-        Curso curso  = cursoRepository.findById(idCurso).orElseThrow(()-> new IllegalStateException("No existe el curso con el id " + idCurso));
+        Estudiante est = estudianteRepository.findById(idEstudiante).orElseThrow();
+        Curso curso  = cursoRepository.findById(idCurso).orElseThrow();
 
         return inscripcionRepository.save(new Inscripcion(curso, est,  java.time.LocalDate.now()));
     }

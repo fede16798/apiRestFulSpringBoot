@@ -1,15 +1,18 @@
 package com.example.SpringMVC.services;
 
+import com.example.SpringMVC.dto.ProfesorDTO;
 import com.example.SpringMVC.entities.Profesor;
+import com.example.SpringMVC.exception.ApiRequestException;
+import com.example.SpringMVC.mapper.ProfesorMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.SpringMVC.repositories.ProfesorRepository;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
 
 @Service
 public class ProfesorService {
@@ -20,30 +23,30 @@ public class ProfesorService {
         this.profesorRepository = profesorRepository;
     }
 
-    public List<Profesor> getProfesores(){
-        return (List<Profesor>) profesorRepository.findAll();
-    }
-
-    public Profesor getProfesorById(Long id){
-        return profesorRepository.findById(id).orElseThrow(() -> new IllegalStateException("no existe el profesor con el id " + id));
-    }
-
-    public void addNewProfesor(Profesor profesor) {
-        Optional<Profesor> prof = profesorRepository.findProfesorByApellido(profesor.getApellido());
-        if(prof.isPresent()) {
-            throw new IllegalStateException("El apellido ya existe");
+    public List<ProfesorDTO> getProfesores(){
+        List<Profesor> profesores = (List<Profesor>) profesorRepository.findAll();
+        List<ProfesorDTO> profesoresDTO = new ArrayList<>();
+        for (Profesor profesor:profesores) {
+            profesoresDTO.add(ProfesorMapper.toDTO(profesor));
         }
-        profesorRepository.save(profesor);
+        return profesoresDTO;
+    }
+
+    public ProfesorDTO getProfesorById(Long id){
+       return ProfesorMapper.toDTO(profesorRepository.findById(id).orElseThrow());
     }
 
     public void deleteProfesor (Long id){
-        boolean existe = profesorRepository.existsById(id);
-        if(!existe) {
-            throw new IllegalStateException("El profesor con el id " + id + " no existe");
-        }
         profesorRepository.deleteById(id);
     }
 
+    public Profesor addNewProfesor(Profesor profesor) {
+        Optional<Profesor> prof = profesorRepository.findProfesorByApellido(profesor.getApellido());
+        if(prof.isPresent()) {
+            throw new ApiRequestException("El apellido del profesor ya existe");
+        }
+        return profesorRepository.save(profesor);
+    }
     @Transactional
     public void updateProfesor(Long id, String nombre, String apellido){
         Profesor prof = profesorRepository.findById(id).

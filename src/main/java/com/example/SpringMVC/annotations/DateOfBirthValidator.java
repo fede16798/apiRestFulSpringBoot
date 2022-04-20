@@ -1,7 +1,7 @@
 package com.example.SpringMVC.annotations;
 
 import com.example.SpringMVC.entities.Profesor;
-import org.apache.tomcat.jni.Local;
+import com.example.SpringMVC.exception.ApiRequestException;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -17,7 +17,10 @@ public class DateOfBirthValidator implements ConstraintValidator<DateOfBirthVali
     @Override
     public boolean isValid(Profesor profesor, ConstraintValidatorContext constraintValidatorContext) {
         Period p = Period.between(profesor.getFechaDeNacimiento(), LocalDate.now());
-        return p.getYears() > 17;
+        if(!(p.getYears() > 17)) {
+          throw new ApiRequestException("The professor must be older than 18 years old");
+        }
+        return true;
     }
 
 }

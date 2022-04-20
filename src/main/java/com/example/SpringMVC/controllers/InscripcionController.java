@@ -34,7 +34,7 @@ public class InscripcionController {
     }
 
     @PostMapping
-    public Inscripcion addInscripcion(@RequestParam(required = true) Long idEst, @RequestParam Long idCurso){
+    public Inscripcion addInscripcion(@RequestParam Long idEst, @RequestParam Long idCurso){
         return inscripcionService.addInscripcion(idEst, idCurso);
     }
 

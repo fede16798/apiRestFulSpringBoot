@@ -1,5 +1,6 @@
 package com.example.SpringMVC.controllers;
 
+import com.example.SpringMVC.dto.ProfesorDTO;
 import com.example.SpringMVC.entities.Profesor;
 import com.example.SpringMVC.services.ProfesorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +20,18 @@ public class ProfesorController {
     }
 
     @GetMapping
-    public List<Profesor> getProfesores() {
+    public List<ProfesorDTO> getProfesores() {
         return profesorService.getProfesores();
      }
 
     @GetMapping (path = "{id}")
-    public Profesor getProfesorById(@PathVariable Long id) {
+    public ProfesorDTO getProfesorById(@PathVariable Long id) {
         return profesorService.getProfesorById(id);
     }
 
     @PostMapping
-    public void addNewProfesor(@Valid @RequestBody Profesor profesor) {
-        profesorService.addNewProfesor(profesor);
+    public Profesor addNewProfesor(@RequestBody Profesor profesor) {
+       return profesorService.addNewProfesor(profesor);
     }
 
     @DeleteMapping(path = "{id}")

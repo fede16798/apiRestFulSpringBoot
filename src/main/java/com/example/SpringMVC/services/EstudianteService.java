@@ -1,14 +1,15 @@
 package com.example.SpringMVC.services;
 
-import com.example.SpringMVC.entities.Curso;
+import com.example.SpringMVC.dto.EstudianteDTO;
 import com.example.SpringMVC.entities.Estudiante;
+import com.example.SpringMVC.mapper.EstudianteMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.SpringMVC.repositories.EstudianteRepository;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,27 +23,30 @@ public class EstudianteService {
         this.estudianteRepository = estudianteRepository;
     }
 
-    public List<Estudiante> getEstudiantes(){
-        return (List<Estudiante>) estudianteRepository.findAll();
+    public List<EstudianteDTO> getEstudiantes(){
+        List<Estudiante> estudiantes = (List<Estudiante>) estudianteRepository.findAll();
+        List<EstudianteDTO> estudianteDTOS = new ArrayList<>();
+        for (Estudiante est:estudiantes) {
+            estudianteDTOS.add(EstudianteMapper.toDTO(est));
+        }
+        return estudianteDTOS;
     }
 
-    public Estudiante getEstudianteById(Long id) {
-        return estudianteRepository.findById(id).orElseThrow(() -> new IllegalStateException("no existe el estudiante con el id " + id));
+    public EstudianteDTO getEstudianteById(Long id) {
+        Estudiante est = estudianteRepository.findById(id).orElseThrow();
+        return EstudianteMapper.toDTO(est);
     }
 
-    public Optional<Estudiante> addNewEstudiante(Estudiante estudiante) {
+    public void deleteEstudiante(Long id) {
+        estudianteRepository.deleteById(id);
+    }
+
+    public Estudiante addNewEstudiante(Estudiante estudiante) {
         Optional<Estudiante> estudianteOpcional = estudianteRepository.findByApellido(estudiante.getApellido());
         if (estudianteOpcional.isPresent()) {
             throw new IllegalStateException("El estudiante con el apellido " + estudiante.getApellido() + " ya existe");
         }
-        estudianteRepository.save(estudiante);
-        return estudianteRepository.findByApellido(estudiante.getApellido());
-    }
-
-    public void deleteEstudiante(Long id) {
-        boolean existe = estudianteRepository.existsById(id);
-        if(!existe) { throw new IllegalStateException("El estudiante con id " + id + " no existe");}
-        estudianteRepository.deleteById(id);
+        return estudianteRepository.save(estudiante);
     }
 
     @Transactional

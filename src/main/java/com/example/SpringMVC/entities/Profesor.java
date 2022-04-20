@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
@@ -18,23 +19,23 @@ public class Profesor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank(message = "name must not be null")
+    @Column(name = "nombre", nullable = false)
     private String nombre;
-    @NotBlank(message = "last name must not be null")
+    @Column(name = "apellido", nullable = false)
     private String apellido;
+    @Column(name = "fecha_de_nacimiento", nullable = false)
     private LocalDate fechaDeNacimiento;
-    @NotBlank(message = "salary must not be null")
-    private double salario;
+    @Column(name = "salario", nullable = false)
+    private Double salario;
     @Transient
     private Integer edad;
 
     @OneToMany (mappedBy = "profesor")
-    @JsonIgnore
     private List<Curso> cursos;
 
     public Profesor (){};
 
-    public Profesor(Long id, String nombre, String apellido, LocalDate fechaDeNacimiento, double salario) {
+    public Profesor(Long id, String nombre, String apellido, LocalDate fechaDeNacimiento, Double salario) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -42,7 +43,7 @@ public class Profesor {
         this.salario = salario;
     }
 
-    public Profesor(String nombre, String apellido, LocalDate fechaDeNacimiento, double salario) {
+    public Profesor(String nombre, String apellido, LocalDate fechaDeNacimiento, Double salario) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.fechaDeNacimiento = fechaDeNacimiento;
@@ -81,11 +82,11 @@ public class Profesor {
         this.fechaDeNacimiento = fechaDeNacimiento;
     }
 
-    public double getSalario() {
+    public Double getSalario() {
         return salario;
     }
 
-    public void setSalario(double salario) {
+    public void setSalario(Double salario) {
         this.salario = salario;
     }
 
